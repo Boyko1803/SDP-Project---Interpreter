@@ -1,0 +1,35 @@
+recdef
+F[x]
+
+while
+(((x < 10) || (yer == zqqe)) && (FERDF[10] < 100))
+
+x = x + 1
+yer = 99 * yer / 43 % F[x] - qdf
+GTY[awe] = x * x / y - 100 * FG[2]
+
+if
+!( ( (0 < htyu) || ( (5678 == wert) && !( (retuy > FRT[12]) ) ) ) )
+then
+x = y + zq
+print tyui
+
+while
+!((y > 10))
+y = y * 2
+y = y + F[x - 1 + 56 % y]
+endwhile
+
+read yer
+y = y * y
+
+else
+
+print 13
+print RTY[x - 154 + uyu]
+x = x + 1
+yer = 101 / 67 * FHY[hdg] + UYK[46] % 45 + kj
+
+endif
+endwhile
+endrecdef

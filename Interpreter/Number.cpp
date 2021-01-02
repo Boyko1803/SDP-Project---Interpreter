@@ -293,6 +293,11 @@ bool Number::operator!=(const Number& other) const
 	return !(*this == other);
 }
 
+Number::operator bool() const
+{
+	return *this > Number(0);
+}
+
 std::ostream& operator<<(std::ostream& os, const Number& num)
 {
 	os << num.parts.back();

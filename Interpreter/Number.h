@@ -39,6 +39,8 @@ public:
 	bool operator==(const Number&) const;
 	bool operator!=(const Number&) const;
 
+	operator bool() const;
+
 	friend std::ostream& operator<<(std::ostream&, const Number&);
 };
 

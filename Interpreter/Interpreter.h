@@ -48,7 +48,6 @@ private:
 		const static std::string undefinedFunctionType;				/// Has string data
 		const static std::string variableReferenceType;				/// Has Instruction* data
 		const static std::string functionReferenceType;				/// Has Instruction* data
-		const static std::string recursiveFunctionReferenceType;	/// Has Instruction* data
 		const static std::string functionReferenceCallType;
 
 
@@ -61,6 +60,7 @@ private:
 
 		static bool convertNumber(const std::string&, Number&);
 		static void undoRedefining(DEFINITIONS&, REDEFINED&, int);
+		static Instruction* createClosure(const Instruction& instruction, const std::string& freeVariable, DEFINITIONS& definitions, DEFINED& alreadyDefined, REDEFINED& redefinedObj, int& redefined);
 
 		std::string type;
 		std::vector<Instruction> parameters;

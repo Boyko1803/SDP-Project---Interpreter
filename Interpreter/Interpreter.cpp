@@ -24,7 +24,6 @@ const std::string Interpreter::Instruction::undefinedVariableType = "undefined v
 const std::string Interpreter::Instruction::undefinedFunctionType = "undefined function";
 const std::string Interpreter::Instruction::variableReferenceType = "variable reference";
 const std::string Interpreter::Instruction::functionReferenceType = "function reference";
-const std::string Interpreter::Instruction::recursiveFunctionReferenceType = "recursive function reference";
 const std::string Interpreter::Instruction::functionReferenceCallType = "function reference call";
 
 void Interpreter::Instruction::deleteData()
@@ -39,6 +38,8 @@ void Interpreter::Instruction::deleteData()
 		else if (!functionNameType.compare(type)) delete (std::string*)(data);
 		else if (!undefinedVariableType.compare(type)) delete (std::string*)(data);
 		else if (!undefinedFunctionType.compare(type)) delete (std::string*)(data);
+		else if (!variableReferenceType.compare(type)) delete (Instruction**)(data);
+		else if (!functionReferenceType.compare(type)) delete (Instruction**)(data);
 	}
 }
 
@@ -57,6 +58,8 @@ void Interpreter::Instruction::copyData(const Interpreter::Instruction& other)
 		else if (!functionNameType.compare(other.type)) data = new std::string(*((std::string*)(other.data)));
 		else if (!undefinedVariableType.compare(other.type)) data = new std::string(*((std::string*)(other.data)));
 		else if (!undefinedFunctionType.compare(other.type)) data = new std::string(*((std::string*)(other.data)));
+		else if (!variableReferenceType.compare(other.type)) data = new Instruction*(*((Instruction**)(other.data)));
+		else if (!functionReferenceType.compare(other.type)) data = new Instruction*(*((Instruction**)(other.data)));
 	}
 	else data = nullptr;
 }
@@ -91,6 +94,123 @@ void Interpreter::Instruction::undoRedefining(DEFINITIONS& definitions, REDEFINE
 		definitions[name] = ins;
 
 		stack.pop();
+	}
+}
+
+Interpreter::Instruction* Interpreter::Instruction::createClosure(const Instruction& instruction, const std::string& freeVariable, DEFINITIONS& definitions, DEFINED& alreadyDefined, REDEFINED& redefinedObj, int& redefined)
+{
+	Instruction *temp, *ins;
+	std::string name;
+	if (!variableNameType.compare(instruction.type))
+	{
+		name = *((std::string*)(instruction.data));
+		if (!freeVariable.compare(name))
+		{
+			ins = new Instruction(instruction);
+
+			return ins;
+		}
+		else
+		{
+			if (definitions[name] == nullptr)
+			{
+				redefinedObj.push(make_pair(name, definitions[name]));
+				alreadyDefined[name] = true;
+				redefined++;
+				temp = new Instruction(undefinedVariableType);
+				temp->data = new std::string(name);
+				definitions[name] = temp;
+				
+				ins = new Instruction(variableReferenceType);
+				ins->data = new Instruction*(temp);
+			}
+			else
+			{
+				ins = new Instruction(variableReferenceType);
+				ins->data = new Instruction*(definitions[name]);
+			}
+			return ins;
+		}
+	}
+	else if (!functionNameType.compare(instruction.type))
+	{
+		name = *((std::string*)(instruction.data));
+		if (definitions[name] == nullptr)
+		{
+			redefinedObj.push(make_pair(name, definitions[name]));
+			alreadyDefined[name] = true;
+			redefined++;
+
+			temp = new Instruction(undefinedFunctionType);
+			temp->data = new std::string(name);
+			definitions[name] = temp;
+
+			ins = new Instruction(functionReferenceType);
+			ins->data = new Instruction*(temp);
+		}
+		else
+		{
+			ins = new Instruction(functionReferenceType);
+			ins->data = new Instruction*(definitions[name]);
+		}
+		return ins;
+	}
+	else if (!functionCallType.compare(instruction.type))
+	{
+		ins = new Instruction(functionReferenceCallType);
+
+		temp = createClosure(instruction.parameters[0], freeVariable, definitions, alreadyDefined, redefinedObj, redefined);
+		ins->parameters.push_back(*temp);
+		delete temp;
+
+		temp = createClosure(instruction.parameters[1], freeVariable, definitions, alreadyDefined, redefinedObj, redefined);
+		ins->parameters.push_back(*temp);
+		delete temp;
+
+		return ins;
+	}
+	else if (!readType.compare(instruction.type))
+	{
+		ins = new Instruction(instruction);
+
+		return ins;
+	}
+	else if (!variableDefinitionType.compare(instruction.type))
+	{
+		ins = new Instruction(instruction);
+
+		return ins;
+	}
+	else if (!functionDefinitionType.compare(instruction.type))
+	{
+		ins = new Instruction(instruction);
+
+		return ins;
+	}
+	else if (!recursiveFunctionDefinitionType.compare(instruction.type))
+	{
+		ins = new Instruction(instruction);
+
+		return ins;
+	}
+	else if (!functionReferenceType.compare(instruction.type))
+	{
+		ins = new Instruction(instruction);
+
+		return ins;
+	}
+	else
+	{
+		ins = new Instruction(instruction);
+
+		for (int i = 0; i < instruction.parameters.size(); i++)
+		{
+			temp = createClosure(instruction.parameters[i], freeVariable, definitions, alreadyDefined, redefinedObj, redefined);
+			ins->parameters[i] = *temp;
+			delete temp;
+		}
+
+		return ins;
 	}
 }
 
@@ -300,9 +420,10 @@ void Interpreter::Instruction::execute(char& state, std::string& undefinedObject
 	}
 	else if (!readType.compare(type))
 	{
+		os << "> ";
 		bool isNumber;
 		Number num;
-		std::string input, name = *((std::string*)(data));
+		std::string input, name = *((std::string*)(parameters[0].data));
 		is >> input;
 		isNumber = convertNumber(input, num);
 		if (isNumber)
@@ -357,7 +478,7 @@ void Interpreter::Instruction::execute(char& state, std::string& undefinedObject
 	{
 		Number first, second;
 		bool ret;
-		char op = *(char*)(data);
+		char op = *((char*)(data));
 		ret = false;
 		parameters[0].execute(state, undefinedObject, definitions, alreadyDefined, redefinedObj, redefined, os, is, ret, first);
 		if (state != normalStateFlag) return;
@@ -373,6 +494,12 @@ void Interpreter::Instruction::execute(char& state, std::string& undefinedObject
 		{
 			returnFlag = true;
 			returnValue = Number(1);
+			return;
+		}
+		else if (op == '&' && !first)
+		{
+			returnFlag = true;
+			returnValue = Number(0);
 			return;
 		}
 
@@ -409,7 +536,7 @@ void Interpreter::Instruction::execute(char& state, std::string& undefinedObject
 	{
 		Number first, second;
 		bool ret;
-		char op = *(char*)(data);
+		char op = *((char*)(data));
 
 		ret = false;
 		parameters[0].execute(state, undefinedObject, definitions, alreadyDefined, redefinedObj, redefined, os, is, ret, first);
@@ -504,11 +631,53 @@ void Interpreter::Instruction::execute(char& state, std::string& undefinedObject
 	}
 	else if (!functionDefinitionType.compare(type))
 	{
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		Instruction *temp, *ins;
+		std::string functionName = *((std::string*)(parameters[0].data));
+		std::string variableName = *((std::string*)(parameters[1].data));
+		temp = createClosure(parameters[2], variableName, definitions, alreadyDefined, redefinedObj, redefined);
+
+		ins = new Instruction(functionReferenceType);
+		ins->parameters.push_back(parameters[1]);
+		ins->parameters.push_back(*temp);
+		delete temp;
+
+		if (alreadyDefined[functionName])
+		{
+			*(definitions[functionName]) = *ins;
+			delete ins;
+		}
+		else
+		{
+			redefinedObj.push(make_pair(functionName, definitions[functionName]));
+			definitions[functionName] = ins;
+			alreadyDefined[functionName] = true;
+			redefined++;
+		}
 	}
 	else if (!recursiveFunctionDefinitionType.compare(type))
 	{
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		Instruction *temp, *ins;
+		std::string functionName = *((std::string*)(parameters[0].data));
+		std::string variableName = *((std::string*)(parameters[1].data));
+		temp = createClosure(parameters[2], variableName, definitions, alreadyDefined, redefinedObj, redefined);
+
+		ins = new Instruction(functionReferenceType);
+		ins->parameters.push_back(parameters[1]);
+		ins->parameters.push_back(*temp);
+		delete temp;
+
+		if (alreadyDefined[functionName])
+		{
+			*(definitions[functionName]) = *ins;
+			delete ins;
+		}
+		else
+		{
+			redefinedObj.push(make_pair(functionName, definitions[functionName]));
+			definitions[functionName] = ins;
+			alreadyDefined[functionName] = true;
+			redefined++;
+		}
 	}
 	else if (!functionCallType.compare(type))
 	{
@@ -519,6 +688,12 @@ void Interpreter::Instruction::execute(char& state, std::string& undefinedObject
 		if (definitions[functionName] == nullptr)
 		{
 			state = undefinedFunctionFlag;
+			return;
+		}
+		else if (!undefinedFunctionType.compare(definitions[functionName]->type))
+		{
+			state = undefinedFunctionFlag;
+			undefinedObject = functionName;
 			return;
 		}
 		else
@@ -551,6 +726,7 @@ void Interpreter::Instruction::execute(char& state, std::string& undefinedObject
 			else
 			{
 				state = lackOfReturnValue;
+				undefinedObject = functionName;
 				return;
 			}
 		}
@@ -560,12 +736,64 @@ void Interpreter::Instruction::execute(char& state, std::string& undefinedObject
 		state = undefinedVariableFlag;
 		undefinedObject = *((std::string*)(data));
 	}
-	else if (!undefinedFunctionType.compare(type))
+	else if (!undefinedFunctionType.compare(type)) return;
+	else if (!variableReferenceType.compare(type))
 	{
-		state = undefinedFunctionFlag;
-		undefinedObject = *((std::string*)(data));
+		Number result;
+		bool ret = false;
+		(*((Instruction**)(data)))->execute(state, undefinedObject, definitions, alreadyDefined, redefinedObj, redefined, os, is, ret, result);
+		if (state != normalStateFlag) return;
+		returnFlag = true;
+		returnValue = result;
 	}
-	
+	else if (!functionReferenceType.compare(type)) return;
+	else if (!functionReferenceCallType.compare(type))
+	{
+		Number result;
+		bool ret;
+		Instruction* functionReference = *((Instruction**)(parameters[0].data));
+		std::string variableName;
+
+		if (!undefinedFunctionType.compare(functionReference->type))
+		{
+			state = undefinedFunctionFlag;
+			undefinedObject = *((std::string*)(functionReference->data));
+			return;
+		}
+		else
+		{
+			ret = false;
+			parameters[1].execute(state, undefinedObject, definitions, alreadyDefined, redefinedObj, redefined, os, is, ret, result);
+			if (state != normalStateFlag) return;
+
+			Instruction* ins = new Instruction(numberType);
+			ins->data = new Number(result);
+
+			int newRedefined = 0;
+			DEFINED newDefined;
+			variableName = *((std::string*)(functionReference->parameters[0].data));
+			redefinedObj.push(make_pair(variableName, definitions[variableName]));
+			definitions[variableName] = ins;
+			newDefined[variableName] = true;
+			newRedefined++;
+
+			ret = false;
+			functionReference->parameters[1].execute(state, undefinedObject, definitions, newDefined, redefinedObj, newRedefined, os, is, ret, result);
+			undoRedefining(definitions, redefinedObj, newRedefined);
+			if (state != normalStateFlag) return;
+
+			if (ret)
+			{
+				returnFlag = true;
+				returnValue = result;
+			}
+			else
+			{
+				state = lackOfReturnValue;
+				return;
+			}
+		}
+	}
 }
 
 /// Definition of class Interpreter
@@ -605,7 +833,7 @@ void Interpreter::handleErrorFlag(std::ostream& outputStream)
 	switch (stateFlag)
 	{
 	case normalStateFlag:
-		outputStream << "Program running normally!\n";
+		outputStream << "The program ended successfully!\n";
 		return;
 	case alreadyRunFlag:
 		outputStream << "This interpreter has already run a program. Create a new instance to run another one!\n";
@@ -634,6 +862,21 @@ void Interpreter::handleErrorFlag(std::ostream& outputStream)
 		break;
 	case expectedEndRecdefFlag:
 		outputStream << "Expected \"endrecdef\" command at line " << currentLine << "!\n";
+		break;
+	case divisionByZeroFlag:
+		outputStream << "Division by zero occured!\n";
+		break;
+	case invalidInputFlag:
+		outputStream << "The given input is invalid!\n";
+		break;
+	case undefinedVariableFlag:
+		outputStream << "Variable " << undefinedObjectName << " is indefined!\n";
+		break;
+	case undefinedFunctionFlag:
+		outputStream << "Function " << undefinedObjectName << " is indefined!\n";
+		break;
+	case lackOfReturnValue:
+		outputStream << "A function failed to return a value!\n";
 		break;
 	}
 
@@ -1247,4 +1490,11 @@ void Interpreter::Run(const std::string& fileAddress, std::istream& inputStream,
 	Instruction::DEFINITIONS definitions;
 	Instruction::DEFINED alreadyDefined;
 	Instruction::REDEFINED predefinedObjects;
+	int redefined = 0;
+	bool ret = false;
+	Number result;
+
+	mainSequence.execute(stateFlag, undefinedObjectName, definitions, alreadyDefined, predefinedObjects, redefined, outputStream, inputStream, ret, result);
+	Instruction::undoRedefining(definitions, predefinedObjects, redefined);
+	handleErrorFlag(outputStream);
 }

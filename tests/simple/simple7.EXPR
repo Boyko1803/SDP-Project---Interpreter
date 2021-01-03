@@ -2,7 +2,6 @@ recdef
 FIB[n]
 
 a = 1
-print a
 b = 1
 counter = 2
 

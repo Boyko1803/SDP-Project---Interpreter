@@ -1,0 +1,14 @@
+recdef
+F[x]
+
+if
+(x == 0)
+then
+return 1
+else
+return x * F[x-1]
+endif
+
+endrecdef
+
+print F[7]

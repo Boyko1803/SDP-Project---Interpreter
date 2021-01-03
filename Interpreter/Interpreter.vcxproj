@@ -123,11 +123,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Instruction.cpp" />
     <ClCompile Include="Interpreter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Number.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Instruction.h" />
+    <ClInclude Include="Interpreter Error Flags.h" />
     <ClInclude Include="Interpreter.h" />
     <ClInclude Include="Number.h" />
   </ItemGroup>

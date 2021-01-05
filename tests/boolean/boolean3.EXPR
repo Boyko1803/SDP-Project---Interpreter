@@ -1,0 +1,10 @@
+x = 100
+y = 100
+
+if
+(((x > y) || (x < y)) || (x + y < 150))
+then
+print 1
+else
+print 0
+endif

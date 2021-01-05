@@ -658,7 +658,7 @@ Interpreter::~Interpreter()
 	if (address != nullptr) delete address;
 }
 
-void Interpreter::Run(const std::string& fileAddress, std::istream& inputStream, std::ostream& outputStream)
+void Interpreter::run(const std::string& fileAddress, std::istream& inputStream, std::ostream& outputStream)
 {
 	if (stateFlag != InterpreterErrorFlags::normalStateFlag)
 	{

@@ -1,0 +1,8 @@
+read var
+read randomname
+
+print var
+print randomname
+
+read var
+print var

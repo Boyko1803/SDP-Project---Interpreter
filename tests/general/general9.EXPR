@@ -1,0 +1,4 @@
+F[x] = 2 * Z[x] + 1
+G[y] = F[y]
+Z[t] = t
+print G[10]

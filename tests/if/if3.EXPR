@@ -1,0 +1,24 @@
+read number
+
+if
+(number % 2 == 0)
+then
+
+if
+(number % 4 == 0)
+then
+print 0
+else
+print 2
+endif
+
+else
+if
+(number % 4 == 1)
+then
+print 1
+else
+print 3
+endif
+
+endif

@@ -1,0 +1,12 @@
+recdef
+FACT[x]
+if
+(x == 0)
+then
+return 1
+else
+return x * FACT[x - 1]
+endif
+endrecdef
+
+print FACT[10]

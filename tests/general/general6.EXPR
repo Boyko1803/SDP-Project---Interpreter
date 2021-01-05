@@ -1,0 +1,19 @@
+recdef
+FIB[n]
+if
+(n < 3)
+then
+return 1
+else
+return FIB[n - 1] + FIB[n - 2]
+endif
+endrecdef
+
+counter = 1
+read limit
+
+while
+((counter < limit) || (counter == limit))
+print FIB[counter]
+counter = counter + 1
+endwhile

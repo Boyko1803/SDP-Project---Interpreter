@@ -1,0 +1,17 @@
+x = 0
+
+while
+(x < 10)
+y = 0
+while
+(y < 10)
+z = 0
+while
+(z < 10)
+print 100 * x + 10 * y + z
+z = z + 1
+endwhile
+y = y + 1
+endwhile
+x = x + 1
+endwhile

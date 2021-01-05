@@ -1,0 +1,12 @@
+recdef
+FUNC[x]
+if
+(x < 2)
+then
+return x
+else
+return 2 * FUNC[x / 2]
+endif
+endrecdef
+
+print FUNC[1775]

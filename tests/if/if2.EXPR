@@ -1,0 +1,31 @@
+read number
+
+if
+(number < 10)
+then
+print number
+
+else
+if
+(number < 100)
+then
+print 2 * number
+
+else
+if
+(number < 1000)
+then
+print 3 * number
+
+else
+if
+(number < 10000)
+then
+print 4 * number
+else
+print 5 * number
+
+endif
+endif
+endif
+endif

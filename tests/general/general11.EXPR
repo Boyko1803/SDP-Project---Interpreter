@@ -1,0 +1,19 @@
+recdef
+F[x]
+
+recdef
+G[y]
+
+recdef
+H[z]
+
+return z
+endrecdef
+
+return H[y] * 2
+endrecdef
+
+return G[x] + 100
+endrecdef
+
+print F[11]

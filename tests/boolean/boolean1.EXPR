@@ -1,0 +1,10 @@
+x = 101
+y = 50
+
+if
+(x > y)
+then
+print 1
+else
+print 0
+endif

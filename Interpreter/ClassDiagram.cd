@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Instruction">
+    <Position X="11" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAAEAIAIhABUAAIABEAAAAYAEJEAAABAAwAQCSAAg=</HashCode>
+      <FileName>Instruction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Interpreter">
+    <Position X="14" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAEwACNBEGABAAAACAIAAAABIAAAAEhAAAAAYACAA=</HashCode>
+      <FileName>Interpreter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Number">
+    <Position X="1.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAIAAAEAAEAEBAAQAAAAAAAAAASBAgAgBAAAA=</HashCode>
+      <FileName>Number.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="StringCompare">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Instruction.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="InterpreterErrorFlags">
+    <Position X="5.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAgABAEAEAgAAAAQAAAAAAAAQAAAJEABAABEQAAAAI=</HashCode>
+      <FileName>Interpreter Error Flags.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

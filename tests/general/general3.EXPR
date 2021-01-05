@@ -1,0 +1,7 @@
+x = 1
+read y
+while
+(x < y)
+print x
+x = 2 * x
+endwhile

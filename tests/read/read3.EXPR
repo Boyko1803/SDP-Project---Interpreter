@@ -1,0 +1,18 @@
+recdef
+F[x]
+
+read x
+return x
+
+endrecdef
+
+x = 10
+
+i = 0
+while
+(i < 5)
+print F[0]
+i = i + 1
+endwhile
+
+print x

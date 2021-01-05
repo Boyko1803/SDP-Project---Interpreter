@@ -39,7 +39,7 @@ public:
 	Interpreter();
 	~Interpreter();
 
-	void Run(const std::string&, std::istream& = std::cin, std::ostream& = std::cout);
+	void run(const std::string&, std::istream& = std::cin, std::ostream& = std::cout);
 
 	friend class Instruction;
 };

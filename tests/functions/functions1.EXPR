@@ -1,0 +1,8 @@
+FUNC[var] = var * var + 2 * var + 1
+
+print FUNC[5]
+print FUNC[10000000]
+
+y = 11
+print FUNC[y]
+print FUNC[y + 10]

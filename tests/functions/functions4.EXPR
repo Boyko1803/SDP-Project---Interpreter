@@ -1,0 +1,18 @@
+recdef
+PRINT[x]
+
+i = 0
+while
+(i < x)
+print FUN[i]
+i = i + 1
+endwhile
+
+return FUN[x]
+endrecdef
+
+FUN[x] = x
+print PRINT[10]
+
+FUN[x] = x * x
+print PRINT[10]

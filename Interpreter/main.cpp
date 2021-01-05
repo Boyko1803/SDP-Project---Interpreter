@@ -11,7 +11,7 @@ int main()
 	cout << "Enter program address: ";
 	getline(cin, address);
 
-	IT.Run(address);
+	IT.run(address);
 
 	return 0;
 }

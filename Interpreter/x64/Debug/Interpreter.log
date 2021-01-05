@@ -1,0 +1,11 @@
+﻿  Instruction.cpp
+C:\Users\Boyko Borisov\Documents\My Folder\СДП\Проект\SDP-Project-Interpreter\Interpreter\Instruction.cpp(55,49): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Interpreter.cpp
+C:\Users\Boyko Borisov\Documents\My Folder\СДП\Проект\SDP-Project-Interpreter\Interpreter\Interpreter.cpp(102,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Boyko Borisov\Documents\My Folder\СДП\Проект\SDP-Project-Interpreter\Interpreter\Interpreter.cpp(131,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Boyko Borisov\Documents\My Folder\СДП\Проект\SDP-Project-Interpreter\Interpreter\Interpreter.cpp(146,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Boyko Borisov\Documents\My Folder\СДП\Проект\SDP-Project-Interpreter\Interpreter\Interpreter.cpp(183,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Boyko Borisov\Documents\My Folder\СДП\Проект\SDP-Project-Interpreter\Interpreter\Interpreter.cpp(212,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  main.cpp
+  Generating Code...
+  Interpreter.vcxproj -> C:\Users\Boyko Borisov\Documents\My Folder\СДП\Проект\SDP-Project-Interpreter\Interpreter\x64\Debug\Interpreter.exe

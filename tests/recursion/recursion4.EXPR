@@ -1,0 +1,21 @@
+recdef
+COLLATZ[x]
+
+if
+(x == 1)
+then
+return x
+else
+print x
+if
+(x % 2 == 0)
+then
+return COLLATZ[x / 2]
+else
+return COLLATZ[3 * x + 1]
+endif
+endif
+
+endrecdef
+
+print COLLATZ[11]

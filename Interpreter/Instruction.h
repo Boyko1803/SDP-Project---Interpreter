@@ -10,7 +10,7 @@
 #include "Number.h"
 #include "Interpreter Error Flags.h"
 
-struct stringCompare {
+struct StringCompare {
 	bool operator()(const std::string& first, const std::string& second) const
 	{
 		return (first.compare(second) < 0);
@@ -19,9 +19,9 @@ struct stringCompare {
 
 class Instruction;
 
-using DEFINITIONS = std::map<std::string, Instruction*, stringCompare>;
-using DEFINED = std::map<std::string, bool, stringCompare>;
-using REDEFINED = std::stack<std::pair<std::string, Instruction*>>;
+using DEFINITIONS = std::map<std::string, Instruction, StringCompare>;
+using DEFINED = std::map<std::string, bool, StringCompare>;
+using REDEFINED = std::stack<std::pair<std::string, Instruction>>;
 
 class Interpreter;
 
@@ -48,9 +48,11 @@ private:
 	const static std::string functionCallType;
 
 	/// Runtime types:
-	const static std::string undefinedVariableType;				/// Has string data
-	const static std::string undefinedFunctionType;				/// Has string data
 	const static std::string functionActionType;
+
+	std::string type;
+	std::vector<Instruction> parameters;
+	void* data;
 
 	void deleteData();
 	void copyData(const Instruction&);
@@ -59,10 +61,6 @@ private:
 	static void undoRedefining(DEFINITIONS&, REDEFINED&, int);
 
 public:
-	std::string type;
-	std::vector<Instruction> parameters;
-	void* data;
-
 	Instruction(std::string = defaultType);
 	Instruction(const Instruction&);
 	Instruction& operator=(const Instruction&);

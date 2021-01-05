@@ -1,0 +1,6 @@
+F[x] = G[x + 1] * G[x - 1] + G[x] + 1
+
+G[x] = x * x
+
+print F[1]
+print F[10]

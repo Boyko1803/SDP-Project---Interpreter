@@ -1,0 +1,13 @@
+a = 1
+b = 1
+counter = 2
+
+print b
+while
+(counter < 101)
+print a
+c = a
+a = a + b
+b = c
+counter = counter + 1
+endwhile

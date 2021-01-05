@@ -1,0 +1,8 @@
+a = 1
+read b
+c = 3
+D[x] = a + 2*b%x
+print a
+print b
+print c
+print D[c]

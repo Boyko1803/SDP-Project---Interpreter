@@ -1,0 +1,2 @@
+C:\Users\Boyko Borisov\Documents\My Folder\СДП\Проект\SDP-Project-Interpreter\Interpreter\x64\Debug\Interpreter.exe
+C:\Users\Boyko Borisov\Documents\My Folder\СДП\Проект\SDP-Project-Interpreter\Interpreter\x64\Debug\Interpreter.pdb

@@ -1,0 +1,5 @@
+x = 10
+y = 20
+F[x] = x + y + z
+z = 5
+print F[y]

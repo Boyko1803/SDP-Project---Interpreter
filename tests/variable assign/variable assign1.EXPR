@@ -1,0 +1,10 @@
+x = 100
+read y
+
+x = x + y * 10
+y = x * x
+z = y - x
+
+print x
+print y
+print z

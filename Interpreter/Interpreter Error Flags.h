@@ -1,6 +1,6 @@
 #pragma once
 
-namespace InterpreterErrorFlags
+struct InterpreterErrorFlags
 {
 	/// Interpreter state flags
 
@@ -27,4 +27,7 @@ namespace InterpreterErrorFlags
 	const static char undefinedVariableFlag = 32;
 	const static char undefinedFunctionFlag = 33;
 	const static char lackOfReturnValue = 34;
-}
+
+
+	InterpreterErrorFlags() = delete;
+};

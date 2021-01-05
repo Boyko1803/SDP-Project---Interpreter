@@ -1,0 +1,17 @@
+recdef
+FIB[x]
+if
+(x < 3)
+then
+return 1
+else
+return FIB[x - 1] + FIB[x - 2]
+endif
+endrecdef
+
+i = 0
+while
+(i < 13)
+print FIB[i]
+i = i + 1
+endwhile

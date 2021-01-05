@@ -1,0 +1,16 @@
+read var
+
+while
+(var > 1)
+
+print var
+if
+(var % 2 == 0)
+then
+var = var / 2
+else
+var = 3 * var + 1
+endif
+
+endwhile
+print var

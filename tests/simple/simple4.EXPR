@@ -1,5 +1,0 @@
-x = 100
-y = 10
-z = 1
-FUNC[z] = z * (x + y) / 2
-print FUNC[3]

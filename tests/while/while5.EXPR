@@ -1,0 +1,20 @@
+recdef
+F[x]
+
+while
+(x < 100)
+print x
+if
+(x == 50)
+then
+return x
+else
+x = x + 1
+endif
+endwhile
+
+return x
+endrecdef
+
+read var
+print F[var]
